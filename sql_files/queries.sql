@@ -9,6 +9,16 @@ SELECT * FROM animals WHERE neutered = true;
 SELECT * FROM animals WHERE name <> 'Gabumon';
 SELECT * FROM animals WHERE weight_kg >= 10.4 AND weight_kg <= 17.3;
 
+-- TRANSACIONS
+
+BEGIN;
+UPDATE animals SET species = 'unspecified';
+SELECT * FROM animals;
+ROLLBACK;
+SELECT * FROM animals;
+COMMIT;
+
+
 BEGIN;
 UPDATE animals SET species = 'digimon';
 WHERE name LIKE '%mon';
@@ -61,19 +71,16 @@ FROM animals
 WHERE neutered = false;
 
 -- 5.What is the minimum and maximum weight of each type of animal?
-SELECT 'Neutered' AS Neutered_Status, AVG(weight_kg) AS average_weight
+SELECT 'pokemon' AS species, MIN(weight_kg) AS min_weight, MAX(weight_kg) AS max_weight
 FROM animals
-WHERE neutered = true
+WHERE species = 'pokemon'
 UNION ALL
-SELECT 'Not Neutered' AS Neutered_Status, AVG(weight_kg) AS average_weight
+SELECT 'digimon' AS species, MIN(weight_kg) AS min_weight, MAX(weight_kg) AS max_weight
 FROM animals
-WHERE neutered = false;
+WHERE species = 'digimon';
 
 -- 6.What is the average number of escape attempts per animal type of those born between 1990 and 2000?
-SELECT 'Neutered' AS Neutered_Status, AVG(escape_attempts) AS Average_Escape_Attempts
+SELECT species, AVG(escape_attempts) AS Average_Escape_Attempts
 FROM animals
-WHERE neutered = true AND date_of_births > '1990-01-01' AND date_of_births < '2000-12-31'
-UNION ALL
-SELECT 'Not Neutered' AS Neutered_Status, SUM(escape_attempts) AS Total_Escape_Attempts
-FROM animals
-WHERE neutered = false AND date_of_births > '1990-01-01' AND date_of_births < '2000-12-31';
+WHERE date_of_births > '1990-01-01' AND date_of_births < '2000-12-31';
+GROUP BY species;
