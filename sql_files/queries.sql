@@ -18,16 +18,11 @@ ROLLBACK;
 SELECT * FROM animals;
 COMMIT;
 
-
-BEGIN;
-UPDATE animals SET species = 'digimon';
-WHERE name LIKE '%mon';
-COMMIT;
-SELECT * FROM animals;
-
 BEGIN;
 UPDATE animals SET species = 'pokemon'
 WHERE species IS NULL OR species = '';
+UPDATE animals SET species = 'digimon';
+WHERE name LIKE '%mon';
 SELECT * FROM animals;
 COMMIT;
 SELECT * FROM animals;
