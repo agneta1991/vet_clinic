@@ -16,7 +16,9 @@ CREATE TABLE animals (
 ALTER TABLE animals
 ADD species varchar(100);
 
-
+-- MULTIPLE TABLES
+-- 
+-- 
 CREATE TABLE owners (
     id INT not null,
     full_name varchar(100) not null,

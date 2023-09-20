@@ -42,7 +42,11 @@ SET species_id = s.id
 FROM species AS s
 WHERE a.species_id IS NULL AND s.name = 'Pokemon';
 
--- Updating owners_id according to the data provided in the requirements
+
+-- MULTIPLE TABLES
+-- 
+-- 
+-- Updating owners_id
 
 -- 1.Update for Sam Smith owning Agumon
 UPDATE animals

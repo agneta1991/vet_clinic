@@ -81,6 +81,9 @@ WHERE date_of_births > '1990-01-01' AND date_of_births < '2000-12-31';
 GROUP BY species;
 
 
+-- MULTIPLE TABLES
+-- 
+-- 
 -- 1.What animals belong to Melody Pond?
 SELECT * FROM animals LEFT JOIN owners 
 ON  owner_id = owners.id
