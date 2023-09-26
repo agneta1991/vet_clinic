@@ -1,77 +1,74 @@
-/* Database schema to keep the structure of entire database. */
-
-createdb vet_clinic
-psql vet_clinic
-
 CREATE TABLE animals (
-    id INT not null,
-    name varchar(100) not null,
-    date_of_births DATE,
-    escape_attempts INT,
-    neutered boolean,
-    weight_kg decimal,
-    PRIMARY KEY (id)
+  id integer GENERATED ALWAYS AS IDENTITY,
+  name varchar(50),
+  date_of_birth date,
+  escape_attempts integer,
+  neutered boolean,
+  weight_kg decimal(6, 2),
+  PRIMARY KEY(id)
 );
-
 ALTER TABLE animals
-ADD species varchar(100);
+ADD COLUMN species VARCHAR(50);
 
--- MULTIPLE TABLES
--- 
--- 
 CREATE TABLE owners (
-    id INT not null,
-    full_name varchar(100) not null,
-    age int not null,
-    PRIMARY KEY (id)
+  id integer GENERATED ALWAYS AS IDENTITY,
+  full_name varchar(100),
+  age integer,
+  PRIMARY KEY(id)
 );
 
 CREATE TABLE species (
-    id INT not null,
-    name varchar (100) not null,
-    PRIMARY KEY (id)
+  id integer GENERATED ALWAYS AS IDENTITY,
+  name varchar(50),
+  PRIMARY KEY(id)
 );
 
 ALTER TABLE animals
-DROP COLUMN species;
-
-ALTER TABLE animals
-ADD COLUMN species_id INT,
+ADD COLUMN species_id integer,
 ADD CONSTRAINT fk_species
-FOREIGN KEY (species_id)
-REFERENCES species(id);
+    FOREIGN KEY (species_id)
+    REFERENCES species(id);
 
 ALTER TABLE animals
-ADD COLUMN owner_id INT,
+ADD COLUMN owner_id integer,
 ADD CONSTRAINT fk_owner
-FOREIGN KEY (owner_id)
-REFERENCES owners(id);
+    FOREIGN KEY (owner_id)
+    REFERENCES owners(id);
 
--- JOIN TABLE VETS 
+ALTER TABLE animals DROP COLUMN species;
 
 CREATE TABLE vets (
-    id INT,
-    name varchar(100),
-    age INT,
-    date_of_graduation DATE,
-    PRIMARY KEY (id)
+  id integer GENERATED ALWAYS AS IDENTITY,
+  name varchar(100),
+  age integer,
+  date_of_graduation date,
+  PRIMARY KEY(id)
 );
 
 CREATE TABLE specializations (
-    specialization_id INT,
-    species_id INT,
-    vet_id INT,
-    PRIMARY KEY(specialization_id),
-    FOREIGN KEY (species_id) REFERENCES species(id),
-    FOREIGN KEY (vet_id) REFERENCES vets(id)
+    vet_id INT REFERENCES vets(id),
+    species_id INT REFERENCES species(id),
+    PRIMARY KEY (vet_id, species_id)
 );
 
 CREATE TABLE visits (
-    visit_id INT,
-    animal_id INT,
-    vet_id INT,
-    visit_date DATE,
-    PRIMARY KEY (visit_id),
-    FOREIGN KEY (animal_id) REFERENCES animals(id),
-    FOREIGN KEY (vet_id) REFERENCES vets(id)
+    visit_id SERIAL PRIMARY KEY,
+    animal_id INT REFERENCES animals(id),
+    vet_id INT REFERENCES vets(id),
+    date_of_visit DATE,
+    CONSTRAINT fk_animal
+        FOREIGN KEY (animal_id)
+        REFERENCES animals(id),
+    CONSTRAINT fk_vet
+        FOREIGN KEY (vet_id)
+        REFERENCES vets(id)
 );
+
+-- Add an email column to your owners table
+ALTER TABLE owners ADD COLUMN email VARCHAR(120);
+
+
+CREATE INDEX index_animal_id ON visits(animal_id asc);
+CREATE INDEX index_vet_id ON visits(vet_id asc);
+CREATE INDEX index_email ON owners(email asc);
+
