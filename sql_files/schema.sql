@@ -70,6 +70,8 @@ ALTER TABLE owners ADD COLUMN email VARCHAR(120);
 
 CREATE INDEX index_animal_id ON visits(animal_id asc);
 CREATE INDEX index_vet_id ON visits(vet_id asc);
+CREATE INDEX index_email ON owners(email asc);
 
 EXPLAIN ANALYZE SELECT COUNT(*) FROM visits WHERE animal_id = 4;
 EXPLAIN ANALYZE SELECT * FROM visits WHERE vet_id = 2;
+EXPLAIN ANALYZE SELECT * FROM owners WHERE email = 'owner_18327@mail.com';
