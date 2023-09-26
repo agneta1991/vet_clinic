@@ -65,13 +65,12 @@ CREATE TABLE invoice_items
 
 -- Create relationship
 CREATE TABLE medical_history_treatment (
-    medical_history_id INT,
-    treatment_id INT,
-    PRIMARY KEY (medical_history_id,treatment_id),
-    CONSTRAINT fk_medical_history
-        FOREIGN KEY (medical_history_id)
-        REFERENCES medical_histories(id),
-    CONSTRAINT fk_treatments
-        FOREIGN KEY (treatment_id)
-        REFERENCES treatments(id)
+    medical_history_id  INT REFERENCES medical_histories(id),
+    treatment_id INT REFERENCES treatments(id),
+    PRIMARY KEY (medical_history_id,treatment_id)
 );
+
+CREATE INDEX index_patient_id ON medical_histories(patient_id);
+CREATE INDEX index_medical_history_id ON invoices(medical_history_id) ;
+CREATE INDEX index_invoice_id ON invoice_items(invoice_id);
+CREATE INDEX index_treatment_id ON invoice_items(treatment_id);
