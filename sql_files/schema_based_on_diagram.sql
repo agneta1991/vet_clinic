@@ -4,8 +4,8 @@ CREATE database clinic;
 CREATE TABLE patients
 (
     id INT GENERATED ALWAYS AS IDENTITY,
-    name text,
-    date_of_birth date,
+    name VARCHAR(100),
+    date_of_birth DATE,
     PRIMARY KEY (id)
 )
 
@@ -13,9 +13,9 @@ CREATE TABLE patients
 CREATE TABLE medical_histories
 (
     id INT GENERATED ALWAYS AS IDENTITY,
-    admited_at timestamp with time zone,
+    admited_at timestamp,
     patient_id INT,
-    status text,
+    status VARCHAR(100),
     PRIMARY KEY (id)
 )
 
@@ -23,9 +23,9 @@ CREATE TABLE medical_histories
 CREATE TABLE invoices
 (
     id INT GENERATED ALWAYS AS IDENTITY,
-    total_amount numeric,
-    generated_at timestamp with time zone,
-    payed_at timestamp with time zone,
+    total_amount DECIMAL(10, 2),
+    generated_at timestamp,
+    payed_at timestamp,
     medical_history_id INT,
     PRIMARY KEY (id)
 )
@@ -34,9 +34,9 @@ CREATE TABLE invoices
 CREATE TABLE invoice_items
 (
     id INT GENERATED ALWAYS AS IDENTITY,
-    unit_price numeric,
+    unit_price DECIMAL(10, 2),
     quantity INT,
-    total_price numeric,
+    total_price DECIMAL(10, 2),
     invoice_id INT,
     treatment_id INT,
     PRIMARY KEY (id)
@@ -46,7 +46,7 @@ CREATE TABLE invoice_items
 CREATE TABLE treatments
 (
     id INT GENERATED ALWAYS AS IDENTITY,
-    type,
-    name,
+    type VARCHAR(255),
+    name VARCHAR(100),
     PRIMARY KEY (id)
 )
